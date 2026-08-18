@@ -1,0 +1,324 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap');
+
+:root {
+  --bg-page: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --bg-option-hover: #F8FAFC;
+  --bg-option-selected: #EFF6FF;
+  
+  --brand-blue: #1E3A8A;
+  --brand-blue-bright: #1E3A8A;
+  --brand-red: #1E3A8A;
+  
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+  
+  --border-light: #E2E8F0;
+  --border-dark: #0F172A;
+  
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  
+  --font-heading: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  
+  --shadow-card: 0 12px 32px -8px rgba(15, 23, 42, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.5;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+/* App Main Layout */
+.app-container {
+  max-width: 580px;
+  width: 100%;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 16px 32px;
+}
+
+@media (min-width: 640px) {
+  .app-container {
+    padding: 32px 20px;
+    justify-content: center;
+  }
+}
+
+/* Quiz Container Card (Cloned from reference) */
+.quiz-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-card);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 640px) {
+  .quiz-card {
+    padding: 36px 32px;
+  }
+}
+
+/* Header Bar (Clean, no pills or emojis) */
+.header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.header-back-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #F1F5F9;
+  border: 1px solid #E2E8F0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  transition: all 0.15s ease;
+}
+
+.header-back-btn:hover {
+  background: #E2E8F0;
+}
+
+.header-title-text {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.header-timer-text {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Progress Line Track */
+.progress-track {
+  width: 100%;
+  height: 4px;
+  background: #E2E8F0;
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--brand-blue-bright);
+  border-radius: 99px;
+  transition: width 0.3s ease;
+}
+
+/* Step Counter Text */
+.step-counter {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--brand-blue-bright);
+  margin-bottom: 12px;
+}
+
+/* Question Title */
+.question-heading {
+  font-size: clamp(1.25rem, 4vw, 1.55rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.35;
+  margin-bottom: 24px;
+}
+
+/* Options List */
+.options-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.option-box {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: #FFFFFF;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  text-align: left;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.option-box:hover {
+  border-color: var(--brand-blue-bright);
+  background: var(--bg-option-hover);
+}
+
+.option-box.selected {
+  background: var(--bg-option-selected);
+  border-color: var(--brand-blue-bright);
+  box-shadow: 0 0 0 1px var(--brand-blue-bright);
+}
+
+.option-box-text {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex: 1;
+  padding-right: 12px;
+}
+
+.option-box.selected .option-box-text {
+  color: var(--brand-blue);
+  font-weight: 700;
+}
+
+.option-box-subtext {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+  display: block;
+}
+
+/* Right-side Radio Checkmark Circle */
+.option-circle {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  border-radius: 50%;
+  border: 2px solid #D1D5DB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  background: #FFFFFF;
+}
+
+.option-box.selected .option-circle {
+  border-color: var(--brand-blue-bright);
+  background: var(--brand-blue-bright);
+  color: #FFFFFF;
+}
+
+/* Full Width Bottom CTA Button (Cloned from reference Next →) */
+.btn-cta {
+  width: 100%;
+  padding: 16px 24px;
+  background: #1E3A8A;
+  color: #FFFFFF;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+.btn-cta:hover {
+  background: #0F172A;
+}
+
+.btn-cta-red {
+  background: #1E3A8A;
+}
+
+.btn-cta-red:hover {
+  background: #0F172A;
+}
+
+.btn-cta-outline {
+  width: 100%;
+  padding: 14px 20px;
+  background: #FFFFFF;
+  border: 1.5px solid var(--border-light);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+.btn-cta-outline:hover {
+  border-color: #CBD5E1;
+  background: #F8FAFC;
+}
+
+/* Inputs */
+.input-label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 14px 16px;
+  background: #FFFFFF;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.input-field:focus {
+  border-color: var(--brand-blue-bright);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* Honeypot field */
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+}

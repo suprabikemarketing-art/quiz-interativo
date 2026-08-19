@@ -52,31 +52,18 @@ export interface RefinementDetails {
 }
 
 export interface QuizLeadPayload {
-  id?: string;
   nome: string;
   whatsapp: string;
   email: string;
-  cidade_residencia: string;
   horario_contato: string;
   possui_socio: string;
-  capital_disponivel: string;
-  origem_capital: string;
-  regiao: string;
-  ja_empreende: string;
-  experiencia_setor: string;
-  prazo_decisao: string;
-  // Campos extras do banco de perguntas
-  dedicacao_operacao?: string;
-  tempo_semanal?: string;
-  ponto_comercial?: string;
-  gestao_estoque_vendas?: string;
-  contrato_franquia?: string;
-  expectativa_retorno?: string;
-  avaliando_concorrencia?: string;
-  score_total: number;
-  classificacao: Classification;
-  origem: string;
-  created_at?: string;
+  p1_intencao: string;
+  p2_capital: string;
+  p3_origem_capital: string;
+  p4_regiao: string;
+  p5_experiencia_negocios: string;
+  p6_experiencia_setor: string;
+  p7_prazo: string;
 }
 
 export interface ScoreResult {

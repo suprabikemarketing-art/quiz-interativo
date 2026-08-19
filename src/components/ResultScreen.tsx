@@ -55,7 +55,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         fontSize: '1rem', 
         marginBottom: '16px' 
       }}>
-        Obrigado por se inscrever para a expansão Supra Bike.
+        Seu perfil foi recebido com sucesso.
       </p>
 
       <p style={{ 
@@ -64,7 +64,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         marginBottom: '28px', 
         lineHeight: 1.6 
       }}>
-        Recebemos todas as suas informações com segurança. Nossa equipe comercial e de expansão avaliará o seu perfil e entrará em contato com você o mais breve possível via WhatsApp.
+        Nossa equipe de expansão vai analisar suas respostas e entrar em contato via WhatsApp em até 48 horas úteis.
       </p>
 
       {/* Status Box */}
@@ -81,9 +81,9 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
       }}>
         <Clock size={24} color="#1E3A8A" style={{ flexShrink: 0 }} />
         <div style={{ fontSize: '0.86rem', color: '#1E3A8A', fontWeight: 600 }}>
-          Status da Avaliação: <strong>Em Análise Comercial</strong>
+          Status da Avaliação: <strong>Em Análise</strong>
           <div style={{ fontSize: '0.78rem', color: '#475569', fontWeight: 400, marginTop: '2px' }}>
-            Aguarde nossa ligação ou mensagem comercial nos próximos dias.
+            Prazo estimado de retorno: até 48 horas úteis.
           </div>
         </div>
       </div>

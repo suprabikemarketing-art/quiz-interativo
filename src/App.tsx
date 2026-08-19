@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { QUIZ_QUESTIONS } from './data/questions';
 import type { QuizAnswer, Option, LeadFormData, QuizLeadPayload } from './types/quiz';
-import { calculateQuizScore, generateScoreResult } from './utils/scoring';
 import { saveLeadToGoogleSheet } from './utils/sheetClient';
-import { getUtmSource } from './utils/formatters';
 
 import { Header } from './components/Header';
 import { ProgressBar } from './components/ProgressBar';
@@ -113,25 +111,19 @@ export function App() {
     setLeadData(formData);
     setIsSaving(true);
 
-    const score = calculateQuizScore(answers);
-    const result = generateScoreResult(score, formData);
-
     const payload: QuizLeadPayload = {
       nome: formData.nome,
       whatsapp: formData.whatsapp,
       email: formData.email,
-      cidade_residencia: answers[4]?.optionLabel || 'Não informada',
       horario_contato: formData.horario_contato,
       possui_socio: formData.possui_socio,
-      capital_disponivel: answers[2]?.optionLabel || 'Não informado',
-      origem_capital: answers[3]?.optionLabel || 'Não informado',
-      regiao: answers[4]?.optionLabel || 'Não informado',
-      ja_empreende: answers[5]?.optionLabel || 'Não informado',
-      experiencia_setor: answers[6]?.optionLabel || 'Não informado',
-      prazo_decisao: answers[7]?.optionLabel || 'Não informado',
-      score_total: score,
-      classificacao: result.classification,
-      origem: getUtmSource()
+      p1_intencao: answers[1]?.optionLabel || '',
+      p2_capital: answers[2]?.optionLabel || '',
+      p3_origem_capital: answers[3]?.optionLabel || '',
+      p4_regiao: answers[4]?.optionLabel || '',
+      p5_experiencia_negocios: answers[5]?.optionLabel || '',
+      p6_experiencia_setor: answers[6]?.optionLabel || '',
+      p7_prazo: answers[7]?.optionLabel || ''
     };
 
     await saveLeadToGoogleSheet(payload);
@@ -221,6 +213,27 @@ export function App() {
             Wisionarium
           </a>
         </span>
+        {currentStep === 'result' && (
+          <button
+            onClick={() => {
+              localStorage.removeItem('supra_quiz_completed');
+              localStorage.removeItem('supra_quiz_lead_data');
+              localStorage.removeItem('supra_quiz_leads_mock');
+              window.location.reload();
+            }}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#CBD5E1',
+              fontSize: '0.65rem',
+              cursor: 'pointer',
+              marginTop: '4px',
+              padding: '2px 6px'
+            }}
+          >
+            Limpar dados do site
+          </button>
+        )}
       </footer>
     </div>
   );

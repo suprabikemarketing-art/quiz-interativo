@@ -10,21 +10,11 @@ export function getSheetUrl(): string {
   return (import.meta.env.VITE_GOOGLE_SHEET_URL as string) || localStorage.getItem(LOCAL_STORAGE_SHEET_URL_KEY) || DEFAULT_GOOGLE_SHEET_URL;
 }
 
-export function saveSheetUrl(url: string) {
-  localStorage.setItem(LOCAL_STORAGE_SHEET_URL_KEY, url.trim());
-}
-
-export function clearSheetUrl() {
-  localStorage.removeItem(LOCAL_STORAGE_SHEET_URL_KEY);
-}
-
-export async function saveLeadToGoogleSheet(payload: QuizLeadPayload): Promise<{ success: boolean; isMock: boolean; error?: string }> {
-  // 1. Sempre salva no LocalStorage como backup local para histórico
-  let isMock = false;
+export async function saveLeadToGoogleSheet(payload: QuizLeadPayload): Promise<{ success: boolean; error?: string }> {
+  // 1. Backup local no localStorage
   try {
     const existing = JSON.parse(localStorage.getItem(LOCAL_STORAGE_MOCK_LEADS) || '[]');
-    const newLead = { ...payload, id: `local-${Date.now()}`, created_at: new Date().toISOString() };
-    existing.unshift(newLead);
+    existing.unshift({ ...payload, created_at: new Date().toISOString() });
     localStorage.setItem(LOCAL_STORAGE_MOCK_LEADS, JSON.stringify(existing));
   } catch (err) {
     console.warn("Aviso ao salvar no armazenamento local:", err);
@@ -33,46 +23,22 @@ export async function saveLeadToGoogleSheet(payload: QuizLeadPayload): Promise<{
   const sheetUrl = getSheetUrl();
 
   try {
-    // 2. Prepara parâmetros no formato URLSearchParams para o Google Apps Script (suporta chaves com e sem espaço)
+    // 2. Monta os parâmetros na ordem exata das colunas da planilha (A-O)
     const params = new URLSearchParams();
-    params.append('Nome', payload.nome);
-    params.append('Email', payload.email);
+    params.append('NomeCompleto', payload.nome);
     params.append('WhatsApp', payload.whatsapp);
-    const localizacao = payload.regiao || payload.cidade_residencia || 'Não informada';
-    params.append('Cidade', localizacao);
-    params.append('Regiao', localizacao);
-    params.append('Região', localizacao);
-    
-    params.append('HorarioContato', payload.horario_contato || 'Não informado');
-    params.append('Horário de Contato', payload.horario_contato || 'Não informado');
-    
-    params.append('PossuiSocio', payload.possui_socio || 'Não informado');
-    params.append('Possui Sócio', payload.possui_socio || 'Não informado');
-    
-    params.append('CapitalDisponivel', payload.capital_disponivel || 'Não informado');
-    params.append('Capital Disponível', payload.capital_disponivel || 'Não informado');
-    
-    params.append('OrigemCapital', payload.origem_capital || 'Não informado');
-    params.append('Origem do Capital', payload.origem_capital || 'Não informado');
-    
-    params.append('JaEmpreende', payload.ja_empreende || 'Não informado');
-    params.append('Já Empreende', payload.ja_empreende || 'Não informado');
-    
-    params.append('ExperienciaSetor', payload.experiencia_setor || 'Não informado');
-    params.append('Experiência no Setor', payload.experiencia_setor || 'Não informado');
-    
-    params.append('PrazoDecisao', payload.prazo_decisao || 'Não informado');
-    params.append('Prazo de Decisão', payload.prazo_decisao || 'Não informado');
-    
-    params.append('ScoreTotal', payload.score_total.toString());
-    params.append('Score Total', payload.score_total.toString());
-    
-    params.append('Classificacao', payload.classificacao.toUpperCase());
-    params.append('Classificação', payload.classificacao.toUpperCase());
-    
-    params.append('Origem', payload.origem || 'direct');
+    params.append('Email', payload.email);
+    params.append('MelhorHorarioContato', payload.horario_contato || '');
+    params.append('PossuiSocio', payload.possui_socio || '');
+    params.append('P1_IntencaoEmpreender', payload.p1_intencao || '');
+    params.append('P2_CapitalDisponivel', payload.p2_capital || '');
+    params.append('P3_OrigemCapital', payload.p3_origem_capital || '');
+    params.append('P4_RegiaoPretendida', payload.p4_regiao || '');
+    params.append('P5_ExperienciaNegocios', payload.p5_experiencia_negocios || '');
+    params.append('P6_ExperienciaSetor', payload.p6_experiencia_setor || '');
+    params.append('P7_PrazoInauguracao', payload.p7_prazo || '');
 
-    // Requisição para a Planilha do Google (no-cors é exigido pelo Apps Script)
+    // 3. Envio para Google Sheets (no-cors exigido pelo Apps Script)
     const sheetPromise = fetch(sheetUrl, {
       method: 'POST',
       mode: 'no-cors',
@@ -82,7 +48,7 @@ export async function saveLeadToGoogleSheet(payload: QuizLeadPayload): Promise<{
       body: params.toString()
     });
 
-    // 3. Envio simultâneo para FormSubmit (notificação por e-mail, igual Página de Captura)
+    // 4. Envio simultâneo para FormSubmit (notificação por e-mail para o time)
     const emailPromise = fetch(DEFAULT_FORMSUBMIT_URL, {
       method: 'POST',
       headers: {
@@ -94,13 +60,16 @@ export async function saveLeadToGoogleSheet(payload: QuizLeadPayload): Promise<{
         Email: payload.email,
         _replyto: payload.email,
         WhatsApp: payload.whatsapp,
-        Cidade: payload.cidade_residencia,
-        HorarioContato: payload.horario_contato,
-        PossuiSocio: payload.possui_socio,
-        CapitalDisponivel: payload.capital_disponivel,
-        ScoreTotal: payload.score_total,
-        Classificacao: payload.classificacao.toUpperCase(),
-        _subject: `⚡ Lead Quiz Supra Bike: ${payload.nome} (${payload.classificacao.toUpperCase()})`,
+        'Melhor Horário': payload.horario_contato,
+        'Possui Sócio': payload.possui_socio,
+        'P1 - Intenção': payload.p1_intencao,
+        'P2 - Capital': payload.p2_capital,
+        'P3 - Origem Capital': payload.p3_origem_capital,
+        'P4 - Região': payload.p4_regiao,
+        'P5 - Experiência Negócios': payload.p5_experiencia_negocios,
+        'P6 - Experiência Setor': payload.p6_experiencia_setor,
+        'P7 - Prazo': payload.p7_prazo,
+        _subject: `⚡ Lead Quiz Supra Bike: ${payload.nome}`,
         _template: 'table',
         _captcha: 'false'
       })
@@ -108,21 +77,9 @@ export async function saveLeadToGoogleSheet(payload: QuizLeadPayload): Promise<{
 
     await Promise.allSettled([sheetPromise, emailPromise]);
 
-    return { success: true, isMock };
+    return { success: true };
   } catch (err: any) {
     console.error("Erro ao enviar lead para a planilha:", err);
-    return { success: true, isMock: true, error: err?.message };
+    return { success: true, error: err?.message };
   }
-}
-
-export function getMockLeads(): QuizLeadPayload[] {
-  try {
-    return JSON.parse(localStorage.getItem(LOCAL_STORAGE_MOCK_LEADS) || '[]');
-  } catch {
-    return [];
-  }
-}
-
-export function clearMockLeads(): void {
-  localStorage.removeItem(LOCAL_STORAGE_MOCK_LEADS);
 }

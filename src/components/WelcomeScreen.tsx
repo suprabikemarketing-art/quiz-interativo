@@ -18,7 +18,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
       </h1>
 
       <p style={{ color: '#475569', fontSize: '1rem', marginBottom: '24px', lineHeight: 1.6 }}>
-        Responda a 6 perguntas objetivas sobre seu capital, região e momento de negócio para receber a avaliação imediata de viabilidade da sua unidade.
+        Responda a 7 perguntas objetivas sobre seu capital, região e momento de negócio para receber a avaliação imediata de viabilidade da sua unidade.
       </p>
 
       {/* Clean features list without icon box pills */}

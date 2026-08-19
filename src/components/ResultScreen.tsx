@@ -24,7 +24,13 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
   }, []);
 
   return (
-    <div className="quiz-card" style={{ textAlign: 'center', padding: '32px 24px' }}>
+    <div className="quiz-card" style={{ 
+      textAlign: 'center', 
+      padding: '36px 24px', 
+      display: 'flex', 
+      flexDirection: 'column', 
+      alignItems: 'center' 
+    }}>
       <div style={{
         display: 'inline-flex',
         alignItems: 'center',
@@ -44,7 +50,8 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         color: '#0F172A', 
         marginBottom: '10px',
         fontFamily: 'var(--font-heading)',
-        fontWeight: 800
+        fontWeight: 800,
+        textAlign: 'center'
       }}>
         Inscrição Concluída com Sucesso!
       </h1>
@@ -53,7 +60,8 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         color: '#1E3A8A', 
         fontWeight: 700, 
         fontSize: '1rem', 
-        marginBottom: '16px' 
+        marginBottom: '16px',
+        textAlign: 'center'
       }}>
         Seu perfil foi recebido com sucesso.
       </p>
@@ -62,52 +70,71 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         color: '#475569', 
         fontSize: '0.95rem', 
         marginBottom: '28px', 
-        lineHeight: 1.6 
+        lineHeight: 1.6,
+        textAlign: 'center',
+        maxWidth: '480px'
       }}>
         Nossa equipe de expansão vai analisar suas respostas e entrar em contato via WhatsApp em até 48 horas úteis.
       </p>
 
-      {/* Status Box */}
+      {/* Status Box - 100% Centralizada */}
       <div style={{
         background: '#EFF6FF',
         border: '1.5px solid #BFDBFE',
         borderRadius: '14px',
-        padding: '16px 20px',
+        padding: '18px 20px',
         marginBottom: '24px',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
-        gap: '12px',
-        textAlign: 'left'
+        justifyContent: 'center',
+        gap: '8px',
+        textAlign: 'center',
+        width: '100%',
+        boxSizing: 'border-box'
       }}>
-        <Clock size={24} color="#1E3A8A" style={{ flexShrink: 0 }} />
-        <div style={{ fontSize: '0.86rem', color: '#1E3A8A', fontWeight: 600 }}>
-          Status da Avaliação: <strong>Em Análise</strong>
-          <div style={{ fontSize: '0.78rem', color: '#475569', fontWeight: 400, marginTop: '2px' }}>
-            Prazo estimado de retorno: até 48 horas úteis.
-          </div>
+        <Clock size={28} color="#1E3A8A" />
+        <div style={{ fontSize: '0.9rem', color: '#1E3A8A', fontWeight: 700, textAlign: 'center' }}>
+          Status da Avaliação: <span style={{ color: '#2563EB' }}>Em Análise</span>
+        </div>
+        <div style={{ fontSize: '0.8rem', color: '#475569', fontWeight: 400, textAlign: 'center' }}>
+          Prazo estimado de retorno: até 48 horas úteis.
         </div>
       </div>
 
-      {/* Lead Summary Card */}
+      {/* Lead Summary Card - 100% Centralizado */}
       <div style={{ 
-        textAlign: 'left', 
+        textAlign: 'center', 
         background: '#F8FAFC', 
         border: '1px solid #E2E8F0',
         borderRadius: '14px',
-        padding: '16px 20px',
+        padding: '18px 20px',
         fontSize: '0.86rem',
         color: '#475569',
         display: 'flex',
         flexDirection: 'column',
-        gap: '6px'
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '8px',
+        width: '100%',
+        boxSizing: 'border-box'
       }}>
-        <div style={{ color: '#0F172A', fontWeight: 700, marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <div style={{ 
+          color: '#0F172A', 
+          fontWeight: 700, 
+          marginBottom: '4px', 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          gap: '6px',
+          textAlign: 'center' 
+        }}>
           <CheckCircle2 size={16} color="#16A34A" /> Dados de Contato Registrados:
         </div>
-        <div>• Nome: <strong>{leadData.nome}</strong></div>
-        <div>• WhatsApp: <strong>{leadData.whatsapp}</strong></div>
-        <div>• E-mail: <strong>{leadData.email}</strong></div>
-        <div>• Melhor Horário p/ Contato: <strong>{leadData.horario_contato}</strong></div>
+        <div>Nome: <strong style={{ color: '#0F172A' }}>{leadData.nome}</strong></div>
+        <div>WhatsApp: <strong style={{ color: '#0F172A' }}>{leadData.whatsapp}</strong></div>
+        <div>E-mail: <strong style={{ color: '#0F172A' }}>{leadData.email}</strong></div>
+        <div>Melhor Horário: <strong style={{ color: '#0F172A' }}>{leadData.horario_contato}</strong></div>
       </div>
     </div>
   );
